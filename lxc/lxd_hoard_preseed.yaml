@@ -1,0 +1,39 @@
+config:
+  core.https_address: '[::]:8443'
+  core.trust_password: true
+  maas.api.key: Mkmp7sZqMN4SvFAftX:yEFF4wZ2C9dk32qxSB:phjKQJQSnzcvpqJCu8Bd7Avz638hSVJW
+  maas.api.url: http://10.4.0.1:5240/MAAS
+networks:
+- config:
+    dns.mode: none
+    ipv4.address: 10.174.97.1/24
+    ipv4.dhcp: "false"
+    ipv4.nat: "true"
+    ipv6.address: fd42:f8e4:2a64:55c3::1/64
+    ipv6.dhcp: "false"
+    ipv6.nat: "true"
+  description: ""
+  name: lxdbr0
+  type: bridge
+storage_pools:
+- config:
+    size: 30GB
+    source: /var/snap/lxd/common/lxd/disks/default.img
+    zfs.pool_name: default
+  description: ""
+  name: default
+  driver: zfs
+profiles:
+- config: {}
+  description: Default LXD profile
+  devices:
+    eth0:
+      name: eth0
+      network: lxdbr0
+      type: nic
+    root:
+      path: /
+      pool: default
+      type: disk
+  name: default
+
