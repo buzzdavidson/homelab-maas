@@ -1,0 +1,5 @@
+---
+# tasks file for myuser
+
+- name: Task 01
+  command: mkdir task01/
