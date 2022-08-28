@@ -4,4 +4,4 @@ late_commands:
   20_ansible: ["curtin", "in-target", "--", "sh", "-c", "/usr/bin/apt install ansible"]
   30_git: ["curtin", "in-target", "--", "sh", "-c", "/usr/bin/apt install git"]
   40_clone: ["curtin", "in-target", "--", "sh", "-c", "git clone https://github.com/buzzdavidson/homelab-maas.git"]
-  50_runansible[“curtin”, “in-target”, “--”, “sh”, “-c”, “ansible-playbook homelab-maas/ansible/site.yml”]
+  50_runansible: [“curtin”, “in-target”, “--”, “sh”, “-c”, “ansible-playbook homelab-maas/ansible/site.yml”]
