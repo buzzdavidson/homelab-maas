@@ -1,9 +1,7 @@
 #cloud-config
 late_commands:
   maas: [wget, '--no-proxy', {{node_disable_pxe_url|escape.json}}, '--post-data', {{node_disable_pxe_data|escape.json}}, '-O', '/dev/null']
- 20_ansible: ["curtin", "in-target", "--", "sh", "-c", "/usr/bin/apt install ansible"]
- 30_git: ["curtin", "in-target", "--", "sh", "-c", "/usr/bin/apt install git"]
- 40_clone: ["curtin", "in-target", "--", "sh", "-c", "git clone https://github.com/buzzdavidson/homelab-maas.git"]
- 50_runansible[“curtin”, “in-target”, “--”, “sh”, “-c”, “ansible-playbook homelab-maas/ansible/site.yml”]
-
-
+  20_ansible: ["curtin", "in-target", "--", "sh", "-c", "/usr/bin/apt install ansible"]
+  30_git: ["curtin", "in-target", "--", "sh", "-c", "/usr/bin/apt install git"]
+  40_clone: ["curtin", "in-target", "--", "sh", "-c", "git clone https://github.com/buzzdavidson/homelab-maas.git"]
+  50_runansible[“curtin”, “in-target”, “--”, “sh”, “-c”, “ansible-playbook homelab-maas/ansible/site.yml”]
