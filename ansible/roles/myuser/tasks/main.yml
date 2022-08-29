@@ -1,5 +1,51 @@
 ---
 # tasks file for myuser
 
-- name: Task 01
-  command: mkdir task01/
+- name: Perform apt cache update
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Install aptitude
+  ansible.builtin.apt:
+    name: aptitude
+    state: present
+
+- name: Install standard packages
+  ansible.builtin.apt:
+    pkg:
+    - emacs-nox
+    - net-tools
+    - htop
+    - git
+    - ansible
+
+- name: Check if lxc* packages are installed
+  shell: apt list --installed | grep "*lxc*"
+  ignore_errors: true
+  changed_when: no
+  no_log: True
+  register: lxc_packages
+
+- name: Remove LXC packages
+  apt:
+    name: "*lxc*"
+    state: absent
+    autoremove: yes
+  when: lxc_packages.rc == 0
+
+- name: Check if lxd* packages are installed
+  shell: apt list --installed | grep "*lxd*"
+  ignore_errors: true
+  changed_when: no
+  no_log: True
+  register: lxd_packages
+
+- name: Remove LXD packages
+  apt:
+    name: "*lxd*"
+    state: absent
+    autoremove: yes
+  when: lxd_packages.rc == 0
+
+- name: Install LXD snap
+  command: snap install lxd
