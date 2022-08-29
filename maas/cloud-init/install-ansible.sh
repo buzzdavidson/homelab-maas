@@ -1,17 +1,20 @@
 #!/bin/bash
-(
-    set
-) | tee /install-ansible.log
 
-(
-    apt-get install ansible git --assume-yes -q
-) | tee -a /install-ansible.log
+export LOGFILE=/var/log/cloud-init-ansible.log
+echo "--- Executing Custom Homelab MAAS Bootstrap ---" >> $LOGFILE
 
-(
-    git clone https://github.com/buzzdavidson/homelab-maas.git
-) | tee -a /install-ansible.log
+echo "--- Environment ---" > $LOGFILE
+set | tee -a $LOGFILE
 
-(
-    ansible-playbook homelab-maas/ansible/site.yml
-) | tee -a /install-ansible.log
+echo "--- Install Ansible and Git ---" >> $LOGFILE
+apt-get install ansible git --assume-yes -q | tee -a $LOGFILE
 
+echo "--- Cloning Ansible Bootstrap ---" >> $LOGFILE
+git clone https://github.com/buzzdavidson/homelab-maas.git /tmp/homelab-maas | tee -a $LOGFILE
+
+echo "--- Executing Ansible Bootstrap ---" >> $LOGFILE
+(
+    ansible-playbook /tmp/homelab-maas/ansible/site.yml
+) | tee -a $LOGFILE
+
+echo "--- Custom Homelab MAAS Bootstrap Complete ---" >> $LOGFILE
