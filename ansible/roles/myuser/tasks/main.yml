@@ -62,3 +62,6 @@
 
 - name: Install LXD snap
   command: snap install lxd
+
+- name: Configure LXD
+  command: lxd init --preseed /tmp/homelab-maas/lxc/lxd_hoard_preseed.yamly
