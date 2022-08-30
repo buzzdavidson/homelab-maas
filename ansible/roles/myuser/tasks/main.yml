@@ -3,12 +3,14 @@
 
 - name: Perform apt cache update
   ansible.builtin.apt:
+    ignore_errors: yes
     update_cache: yes
 
 - name: Install aptitude
   ansible.builtin.apt:
     name: aptitude
     state: present
+    ignore_errors: yes
 
 - name: Install standard packages
   ansible.builtin.apt:
