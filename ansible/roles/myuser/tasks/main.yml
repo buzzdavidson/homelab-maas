@@ -47,5 +47,16 @@
     autoremove: yes
   when: lxd_packages.rc == 0
 
+- name: Check if lxd snap is installed
+  shell: snap list lxd"
+  ignore_errors: true
+  changed_when: no
+  no_log: True
+  register: lxd_snap
+
+- name: Remove LXD snap
+  command: snap remove lxd
+  when: lxd_snap.rc == 0
+
 - name: Install LXD snap
   command: snap install lxd
