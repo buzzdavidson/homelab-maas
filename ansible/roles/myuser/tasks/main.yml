@@ -64,4 +64,16 @@
   command: snap install lxd
 
 - name: Configure LXD
-  command: lxd init --preseed /tmp/homelab-maas/lxc/lxd_hoard_preseed.yamly
+  command: lxd init --preseed /tmp/homelab-maas/lxc/lxd_hoard_preseed.yaml
+
+- name: Check LXD install status
+  shell: lxc network show lxdbr0
+  ignore_errors: true
+  changed_when: no
+  no_log: True
+  register: lxd_net_ok
+
+- name: Configure LXD Bridge Network
+  command: lxc network set lxdbr0 dns.mode=none && lxc network set lxdbr0 ipv4.dhcp=false && lxc network set lxdbr0 ipv6.dhcp=false
+  when: lxd_net_ok == 0
+
