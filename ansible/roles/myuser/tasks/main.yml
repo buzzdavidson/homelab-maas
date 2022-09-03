@@ -20,6 +20,8 @@
     - htop
     - git
     - ansible
+    - yamllint
+    - avahi-daemon
 
 - name: Check if lxc* packages are installed
   shell: apt list --installed | grep "*lxc*"
