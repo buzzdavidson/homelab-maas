@@ -5,5 +5,4 @@ sudo apt install aptitude ansible
 
 git config --global user.email "buzzdavidson@me.com"
 git config --global user.name "Steve Davidson"
-
-
+git config --global credential.helper cache
