@@ -5,7 +5,7 @@
   ansible.builtin.apt:
     update_cache: yes
   ignore_errors: true
-    
+
 - name: Install aptitude
   ansible.builtin.apt:
     name: aptitude
@@ -21,7 +21,6 @@
     - git
     - ansible
     - yamllint
-    - avahi-daemon
 
 - name: Check if lxc* packages are installed
   shell: apt list --installed | grep "*lxc*"
@@ -64,9 +63,11 @@
 
 - name: Install LXD snap
   command: snap install lxd
+  when: install_lxd is defined and install_lxd == '1'
 
 - name: Configure LXD
   command: lxd init --preseed /tmp/homelab-maas/lxc/lxd_hoard_preseed.yaml
+  when: install_lxd is defined and install_lxd == '1'
 
 - name: Check LXD install status
   shell: lxc network show lxdbr0
@@ -74,8 +75,15 @@
   changed_when: no
   no_log: True
   register: lxd_net_ok
+  when: install_lxd is defined and install_lxd == '1'
 
 - name: Configure LXD Bridge Network
   command: lxc network set lxdbr0 dns.mode=none && lxc network set lxdbr0 ipv4.dhcp=false && lxc network set lxdbr0 ipv6.dhcp=false
-  when: lxd_net_ok == 0
+  when: install_lxd is defined and install_lxd == '1' and lxd_net_ok == 0
+
+- name: (ceph) install ceph prerequisites
+  ansible.builtin.apt:
+    pkg:
+    - podman
+    - cephadm
 
