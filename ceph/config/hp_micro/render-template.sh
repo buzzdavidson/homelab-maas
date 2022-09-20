@@ -30,6 +30,11 @@ else
     exit 1
 fi
 
+if [ -z ${CEPH_NET_DEVICE+x} ]; then
+    echo "ERROR: Unable to determine USB Network device name"
+    exit 1
+fi
+
 echo "Backing up old netplan"
 BACKUP_FILE=${DATA_FILE}.backup
 
