@@ -42,3 +42,5 @@ mv ${DATA_FILE} ${BACKUP_FILE}
 echo "Rendering template with node number [${NODE_NUMBER}] and network device [${CEPH_NET_DEVICE}"]
 cat ${TEMPLATE_FILE} | envsubst > ${DATA_FILE}
 
+echo "applying netplan"
+netplan apply
